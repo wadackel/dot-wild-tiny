@@ -11,15 +11,11 @@
 
 ## Table of Contents
 
-<!-- vim-markdown-toc Redcarpet -->
-
 * [Install](#install)
 * [Usage](#usage)
 * [Contribute](#contribute)
 * [Related projects](#related-projects)
 * [License](#license)
-
-<!-- vim-markdown-toc -->
 
 
 
@@ -43,13 +39,13 @@ $ yarn add dot-wild-tiny
 import dot from 'dot-wild-tiny';
 
 
-dot.get({ foo: { bar: 'baz' } }, 'foo.bar');
+dot({ foo: { bar: 'baz' } }, 'foo.bar');
 // => 'baz'
 
-dot.get({ 'foo.bar': 'baz' }, 'foo\\.bar');
+dot({ 'foo.bar': 'baz' }, 'foo\\.bar');
 // => 'baz'
 
-dot.get({ 'foo.bar': 'baz' }, 'notfound', 'default');
+dot({ 'foo.bar': 'baz' }, 'notfound', 'default');
 // => 'default'
 
 const authorData = {
@@ -60,10 +56,10 @@ const authorData = {
   ]
 };
 
-dot.get(authorData, 'authors.*.username');
+dot(authorData, 'authors.*.username');
 // => ['tsuyoshiwada', 'sampleuser', 'foobarbaz']
 
-dot.get(authorData, 'authors.*.profile.age');
+dot(authorData, 'authors.*.profile.age');
 // => [24, 30, 33]
 ```
 
