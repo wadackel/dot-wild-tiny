@@ -1,0 +1,63 @@
+{
+  "name": "dot-wild-tiny",
+  "version": "0.0.1",
+  "description": "Use powerful dot notation (dot path + wildcard) to access properties of JSON",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "npm run build -- -w & npm run test:watch",
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+    "test:unit": "mocha --compilers ts:ts-node/register,tsx:ts-node/register 'test/**/*.spec.ts'",
+    "test:watch": "npm run test:unit -- -w",
+    "prepublish": "npm run build"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsuyoshiwada/dot-wild-tiny.git"
+  },
+  "keywords": [
+    "obj",
+    "object",
+    "arr",
+    "array",
+    "prop",
+    "property",
+    "dot",
+    "dot-notation",
+    "path",
+    "get",
+    "access",
+    "notation",
+    "dotty",
+    "typescript",
+    "ts"
+  ],
+  "author": "tsuyoshiwada",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tsuyoshiwada/dot-wild-tiny/issues"
+  },
+  "homepage": "https://github.com/tsuyoshiwada/dot-wild-tiny#readme",
+  "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.7",
+    "@types/power-assert": "^1.4.29",
+    "mocha": "^3.4.2",
+    "power-assert": "^1.4.4",
+    "ts-node": "^3.1.0",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
+  },
+  "dependencies": {
+    "is-plain-object": "^2.0.3"
+  },
+  "files": [
+    "lib",
+    "test"
+  ]
+}
