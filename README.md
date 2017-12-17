@@ -36,16 +36,19 @@ $ yarn add dot-wild-tiny
 ## Usage
 
 ```javascript
-import dot from 'dot-wild-tiny';
+import * as dot from 'dot-wild-tiny';
 
 
-dot({ foo: { bar: 'baz' } }, 'foo.bar');
+/**
+ * Getter
+ */
+dot.get({ foo: { bar: 'baz' } }, 'foo.bar');
 // => 'baz'
 
-dot({ 'foo.bar': 'baz' }, 'foo\\.bar');
+dot.get({ 'foo.bar': 'baz' }, 'foo\\.bar');
 // => 'baz'
 
-dot({ 'foo.bar': 'baz' }, 'notfound', 'default');
+dot.get({ 'foo.bar': 'baz' }, 'notfound', 'default');
 // => 'default'
 
 const authorData = {
@@ -56,11 +59,28 @@ const authorData = {
   ]
 };
 
-dot(authorData, 'authors.*.username');
+dot.get(authorData, 'authors.*.username');
 // => ['tsuyoshiwada', 'sampleuser', 'foobarbaz']
 
-dot(authorData, 'authors.*.profile.age');
+dot.get(authorData, 'authors.*.profile.age');
 // => [24, 30, 33]
+
+
+/**
+ * Collection helpers (forEach, map)
+ */
+dot.forEach(postData, 'data.posts.*.id', (value, key, context, path, data) => {
+  // value   => 1, 2
+  // key     => 'id', 'id'
+  // context => { id: 1, title: 'post 1' }, { id: 2, title: 'post 2' }
+  // path    => 'data.posts.0.id', 'data.posts.1.id'
+  // data    => postData...
+});
+
+dot.map(postData, 'data.tags.*.name', (value, key, context, path, data) => {
+  return `${dot.get(data, path)} === ${value} (${key})`;
+});
+// => ['tag 1 === tag 1 (name)', 'tag 2 === tag 2 (name)']
 ```
 
 
