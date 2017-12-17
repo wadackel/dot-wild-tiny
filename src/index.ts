@@ -181,7 +181,7 @@ const internalGet = (data: any, path: DotKey, value: any | undefined, options?: 
   };
 };
 
-const dot = (data: any, path: DotKey, value: any | undefined = undefined, options?: DotGetOptions): any => {
+export const get = (data: any, path: DotKey, value: any | undefined = undefined, options?: DotGetOptions): any => {
   const { exist, wildcard, values } = internalGet(data, path, value, options);
 
   if (!exist) return values[0][0];
@@ -189,4 +189,51 @@ const dot = (data: any, path: DotKey, value: any | undefined = undefined, option
   return values[0][0] === undefined ? value : values[0][0];
 };
 
-export default dot;
+
+/**
+ * Executes a provided function once for each element.
+ */
+export const forEach = (
+  data: any,
+  path: DotKey,
+  iteratee: (value: any, key: DotKey, context: any, path: string, data: any | any[]) => boolean | void,
+  options?: DotGetOptions,
+): void => {
+  const { exist, values } = internalGet(data, path, null, options);
+  if (!exist) return;
+
+  each(values, ([v, c, p]) => iteratee(v, p[p.length - 1], c, p.join('.'), data));
+};
+
+
+/**
+ * Create a new element
+ * with the results of calling a provided function on every element.
+ */
+export const map = (
+  data: any,
+  path: DotKey,
+  iteratee: (value: any, key: DotKey, context: any, path: string, data: any | any[]) => any,
+  options?: DotGetOptions,
+): any[] => {
+  const { exist, values } = internalGet(data, path, null, options);
+  if (!exist) return [];
+
+  return values.map(([v, c, p]) => iteratee(v, p[p.length - 1], c, p.join('.'), data));
+};
+
+
+/**
+ * Match key
+ */
+export const matchPath = (pathA: string, pathB: string): boolean => {
+  if (!isString(pathA) || !isString(pathB)) return false;
+  if (pathA === pathB) return true;
+
+  const a = tokenize(pathA);
+  const b = tokenize(pathB);
+
+  return a.length !== b.length ? false : a.every((t, i) =>
+    matchToken(t, b[i]) || matchToken(b[i], t),
+  );
+};
